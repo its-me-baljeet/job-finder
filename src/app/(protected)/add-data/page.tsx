@@ -12,7 +12,7 @@ export default function Page(){
                     description: item.job_description,
                     salary: 100000,
                     location: item.job_location,
-                    employment_type: "part-time",
+                    employment_type: "fulltime",
                     job_type: "remote"
                 }
             )

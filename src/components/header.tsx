@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ModeToggle } from "./modeToggleBtn";
 import { SearchInput } from "./searchInput";
+import { HeaderDropdown } from "./headerDropdown";
+import { User } from "../../generated/prisma";
 
 export default function Header() {
     return (
@@ -11,6 +13,7 @@ export default function Header() {
             <section className="flex gap-5">
                 <SearchInput />
                 <ModeToggle />
+                <HeaderDropdown/>
             </section>
         </header>
     )

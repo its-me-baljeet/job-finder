@@ -1,0 +1,47 @@
+'use client'
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { FormEvent, useState } from "react";
+
+export default function Page() {
+    const [name, setName]= useState("");
+    const [description, setDescription]= useState("");
+    const [loading, setLoading]=useState(false)
+
+    async function handleSubmit(e:FormEvent){
+        e.preventDefault();
+        setLoading(true);
+
+        const company = {
+            name, 
+            description
+        }
+        const res = await fetch("http://localhost:3000/api/company",{
+            method:"POST",
+            body: JSON.stringify(company)
+        })
+        const data = await res.json();
+        setLoading(false);
+    }
+
+    return (
+        <main className="h-full w-full flex justify-center items-center">
+            <form onSubmit={handleSubmit} className="w-3xl bg-muted p-5 rounded-md flex flex-col gap-5">
+                <h2>Company Details</h2>
+                <Input
+                    type="text"
+                    placeholder="enter company title..."
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+                <Textarea
+                    placeholder="enter company description..."
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                />
+                <Button disabled={loading} type="submit" variant="default">Add</Button>
+            </form>
+        </main>
+    )
+}

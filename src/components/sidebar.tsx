@@ -56,7 +56,7 @@ export function AppSidebar() {
     const q = searchParams.get('q');
     const ms = searchParams.get("ms");
 
-    const [jobType, setJobType] = useState(jt || "remote");
+    const [jobType, setJobType] = useState(jt || "on-site");
     const [employmentType, setEmploymentType] = useState(et || "fulltime");
     const [minSalary, setMinSalary] = useState(Number(ms) || 100000);
 
@@ -91,7 +91,7 @@ export function AppSidebar() {
                             </section>
                             <section className="flex flex-col gap-2 border p-2 rounded-md">
                                 <h2>Job Type</h2>
-                                <RadioGroup defaultValue="remote">
+                                <RadioGroup defaultValue="on-site">
                                     <div className="flex items-center space-x-2" >
                                         <RadioGroupItem value="remote" id="remote" onClick={() => setJobType("remote")} />
                                         <Label htmlFor="remote">Remote</Label>

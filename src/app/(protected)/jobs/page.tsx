@@ -1,12 +1,13 @@
 import JobCard from "@/components/jobCard";
-import db from "@/services/prisma";
-
+import { Job } from "../../../../generated/prisma";
+import NextButton from "@/components/nextButton";
 export default async function JobsPage({ searchParams }: {
     searchParams: {
         q: string,
         jt: string,
         et: string,
         ms: string,
+        page: string,
     }
 }) {
     const params = await searchParams;
@@ -14,19 +15,15 @@ export default async function JobsPage({ searchParams }: {
     const jt = params.jt || "remote";
     const et = params.et || "fulltime";
     const ms = params.ms ? Number.parseInt(params.ms) : 100000;
-    const jobs = await db.job.findMany({
-        where: {
-            title: {
-                contains: q,
-                mode: "insensitive",
-            },
-            job_type: jt,
-            employment_type: et,
-            salary: {
-                gte: ms
-            }
-        },
-    })
+    const page = params.page? Number.parseInt(params.page):1;
+    const res = await fetch(`http://localhost:3000/api/search?q=${q}&jt=${jt}&et=${et}&ms=${ms}&page=${page}`);
+    const data = await res.json();
+    let jobs:Job[];
+    if(!data.success){
+        jobs=[]
+    }
+    jobs= data.data;
+    // console.log(jobs)
     return (
         <main className="p-5">
             <section className="w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -38,6 +35,7 @@ export default async function JobsPage({ searchParams }: {
                     })
                 }
             </section>
+            {/* <NextButton /> */}
         </main>
     )
 }

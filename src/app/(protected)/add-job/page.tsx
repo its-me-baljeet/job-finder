@@ -12,8 +12,8 @@ export default function Page() {
     const [jobDescription, setJobDescription] = useState("");
     const [jobLocation, setJobLocation] = useState("");
     const [jobSalary, setJobSalary] = useState("");
-    const [jobType, setJobType] = useState("on-site");
-    const [employmentType, setEmploymentType] = useState("full-time");
+    const [jobType, setJobType] = useState("part-time");
+    const [employmentType, setEmploymentType] = useState("on-site");
     const [loading, setLoading]=useState(false)
 
     async function handleSubmit(e:FormEvent){

@@ -23,3 +23,17 @@ model Job {
   employment_type String @default("fulltime")
   job_type        String @default("on-site")
 }
+
+model User {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  email    String @unique
+  password String
+  role     String
+}
+
+model Company {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  ownerId     String @unique
+}
