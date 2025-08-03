@@ -1,37 +1,33 @@
+import { getUserFromCookies } from "@/hooks/helper";
 import db from "@/services/prisma";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET(){
-    console.log("hi")
     try{
-        const userCookies = await cookies();
-        const email = userCookies.get("token")?.value;
-    
-        if(!email){
-            return NextResponse.json({
-                success: false,
-                message: "User not authenticated!"
-            })
-        }
-        const user = await db.user.findUnique({
-            where:{
-                email: email,
-            },
-            omit:{
-                password: true
-            }
-        });
+        const user = await getUserFromCookies();
         if(!user){
             return NextResponse.json({
                 success: false,
                 message: "User not found!",
             })
         }
+        const userId = user.id;
+        const company = await db.company.findUnique({
+            where:{
+                ownerId: userId,
+            }
+        });
+
+        const data = {
+            ...user,
+            company
+        }
         return NextResponse.json({
             success: true,
-            user: user
+            data: data
         })
+
     }catch(error){
         console.error("Something went wrong!", error);
         return NextResponse.json({

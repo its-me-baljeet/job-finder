@@ -1,8 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { data } from "@/contants/data";
-import { MapPin } from "lucide-react";
+import { MapPin, Save, Send } from "lucide-react";
 
 export default async function Page({ params }: {
     params: {
@@ -10,27 +11,36 @@ export default async function Page({ params }: {
     }
 }) {
     const id = params.id;
-    const job = data.data.find(job => job.job_id === id);
-    console.log(job)
+    const res = await fetch("http://localhost:3000/api/job/" + id);
+    const data = await res.json();
+
+    const job = data.data;
     if (!job) {
         return <p>No data found!</p>
     }
     return (
-        <main>
+        <main className="p-5">
             <Card className="h-full shadow-md">
                 <CardHeader>
                     <div className="flex gap-5">
-                        <CardTitle>{job.job_title}</CardTitle>
-                        <Badge variant="default" className="h-fit w-fit ml-auto">{job.job_employment_type}</Badge>
+                        <CardTitle className="font-semibold text-2xl">{job.title}</CardTitle>
+
+                        <div className="ml-auto flex gap-3 items-center">
+                            <Button variant="secondary" className="flex"><Save />Save</Button>
+                            <Button variant="secondary" className="flex"><Send />Apply</Button>
+
+                        </div>
                     </div>
-                    <p className="flex gap-2 text-sm"><span><MapPin size={20} /></span>{job.job_location}</p>
+                    <p className="flex gap-2 text-sm"><span><MapPin size={20} /></span>{job.location}</p>
+                    <p>Salary <span>₹{job.salary}</span></p>
+                    <Badge variant="default" className="h-fit w-fit mt-2">{job.job_type}</Badge>
                 </CardHeader>
                 <CardContent>
-                    <CardDescription className=" line-clamp-2 text-sm tracking-wide">{job.job_description}</CardDescription>
+                    <CardDescription className=" text-sm tracking-wide">{job.description}</CardDescription>
                 </CardContent>
                 <CardFooter>
                     {/* <p>Card Footer</p> */}
-                    <section className="w-full flex items-center justify-between">
+                    {/* <section className="w-full flex items-center justify-between">
 
                         <div className="flex items-center gap-2 border p-2 rounded-md">
                             <Avatar className="">
@@ -41,7 +51,7 @@ export default async function Page({ params }: {
 
                         </div>
                         <CardAction className="ml-auto self-center">view</CardAction>
-                    </section>
+                    </section> */}
                 </CardFooter>
             </Card>
         </main>

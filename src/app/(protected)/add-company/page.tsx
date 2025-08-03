@@ -2,12 +2,15 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { toast } from "sonner";
 
 export default function Page() {
     const [name, setName]= useState("");
     const [description, setDescription]= useState("");
-    const [loading, setLoading]=useState(false)
+    const [loading, setLoading]=useState(false);
+    const router = useRouter();
 
     async function handleSubmit(e:FormEvent){
         e.preventDefault();
@@ -22,6 +25,13 @@ export default function Page() {
             body: JSON.stringify(company)
         })
         const data = await res.json();
+        if(data.success){
+            toast.success("Company added!");
+            router.push("/");
+        }else{
+            toast.error(data.message);
+            return ;
+        }
         setLoading(false);
     }
 

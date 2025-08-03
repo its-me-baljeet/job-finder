@@ -13,7 +13,7 @@ export default function Layout({ children }: {
             const res = await fetch("http://localhost:3000/api/current-user");
             const data = await res.json();
             if (data.success) {
-                setUser(data.user);
+                setUser(data.data);
             }
         }
         getUser();

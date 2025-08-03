@@ -31,11 +31,25 @@ export function HeaderDropdown() {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 {
-                    user?.role == "admin"
-                    &&
+                    user?.company?
                     <DropdownMenuItem>
                         <Link href={"/add-job"}>
                             + Add Job
+                        </Link>
+                    </DropdownMenuItem>
+                    :
+                    <DropdownMenuItem>
+                        <Link href={"/add-company"}>
+                            + Add Company
+                        </Link>
+                    </DropdownMenuItem>
+
+                }
+                {
+                    user?.company&&
+                    <DropdownMenuItem>
+                        <Link href={"/company/"+user.id}>
+                            View Company
                         </Link>
                     </DropdownMenuItem>
                 }

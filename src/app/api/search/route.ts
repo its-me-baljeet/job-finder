@@ -14,17 +14,17 @@ export async function GET(req: NextRequest) {
 
     try{
         const data = await db.job.findMany({
-            // where: {
-            //     title: {
-            //         contains: q,
-            //         mode: "insensitive",
-            //     },
-            //     job_type: jt,
-            //     employment_type: et,
-            //     salary: {
-            //         gte: ms
-            //     }
-            // },
+            where: {
+                title: {
+                    contains: q,
+                    mode: "insensitive",
+                },
+                job_type: jt,
+                employment_type: et,
+                salary: {
+                    gte: ms
+                }
+            },
             take: limit,
             skip: (page-1)*limit
         });
