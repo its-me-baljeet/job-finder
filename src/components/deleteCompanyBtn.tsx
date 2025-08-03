@@ -13,11 +13,12 @@ export default function DeleteCompanyButton({ id }: {id: string}) {
 
         if (data.success) {
             toast.success(data.message);
+            window.location.href="/";
         } else {
             toast.error(data.message)
         }
     }
     return (
-        <Button variant="destructive" onClick={handleDelete}>delete company</Button>
+        <Button variant="destructive" className="w-fit" onClick={handleDelete}>delete company</Button>
     )
 }

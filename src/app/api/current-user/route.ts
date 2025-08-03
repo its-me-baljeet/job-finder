@@ -1,4 +1,5 @@
 import { getUserFromCookies } from "@/hooks/helper";
+import { verifytoken } from "@/services/jwt";
 import db from "@/services/prisma";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
@@ -12,6 +13,7 @@ export async function GET(){
                 message: "User not found!",
             })
         }
+
         const userId = user.id;
         const company = await db.company.findUnique({
             where:{
@@ -23,6 +25,7 @@ export async function GET(){
             ...user,
             company
         }
+
         return NextResponse.json({
             success: true,
             data: data

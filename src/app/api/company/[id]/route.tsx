@@ -11,20 +11,16 @@ export async function GET(req: NextRequest, {params}:{
     const company = await db.company.findUnique({
         where:{
             ownerId: id,
+        },
+        include:{
+            owner: true,
         }
     });
-
-    const owner= await db.user.findUnique({
-        where: {
-            id: company?.ownerId,
-        }
-    })
 
     return NextResponse.json({
         success: true,
         data: {
-            company,
-            owner
+            company
         }
     })
 }
@@ -34,7 +30,8 @@ export async function DELETE(req:NextRequest, {params}:{params:{id:string}}){
 
         const id = params.id;
         const user = await getUserFromCookies();
-        console.log(id)
+        // console.log(id)
+        console.log(user?.company)
         const company = await db.company.findUnique({
             where:{
                 ownerId: id

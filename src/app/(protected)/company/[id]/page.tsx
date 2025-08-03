@@ -5,18 +5,20 @@ export default async function Page({ params }: {
         id: string;
     }
 }) {
-    const id = params.id;
+    const ps = await params;
+    const id = ps.id;
 
     const res = await fetch("http://localhost:3000/api/company/" + id);
     const data = await res.json();
 
     const company = data.data.company;
-    const owner = data.data.owner;
+    const owner = company.owner;
+    // console.log(owner)
     return (
         <main className="p-5">
-            <section>
-                <h2>Company Name : {company.title}</h2>
-                <p>Company Description: {company.description}💦💦</p>
+            <section className="bg-muted p-5 rounded-md flex flex-col gap-2">
+                <h2 >Company Name : {company.title}</h2>
+                <p>Company Description: {company.description}</p>
 
                 <br />
 
@@ -24,9 +26,9 @@ export default async function Page({ params }: {
 
                 <br />
 
-                <h2>CEO : 💦💦{owner.email}💦💦</h2>
-            </section>
+                <h2>CEO : {owner.email}</h2>
             <DeleteCompanyButton id={owner.id} />
+            </section>
         </main>
     )
 }

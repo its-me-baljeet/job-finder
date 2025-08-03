@@ -25,15 +25,28 @@ model Job {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  email    String @unique
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  email    String   @unique
   password String
   role     String
+  company  Company?
+  // resume   Resume?
 }
 
 model Company {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
-  ownerId     String @unique
+  ownerId     String @unique @db.ObjectId
+  owner       User   @relation(fields: [ownerId], references: [id])
 }
+
+// model Resume {
+//   id             String @id @default(auto()) @map("_id") @db.ObjectId
+//   qualification  String
+//   education      String
+//   cgpa           String
+//   graduationYear String
+//   ownerId        String @unique @db.ObjectId
+//   owner          User   @relation(fields: [ownerId], references: [id])
+// }

@@ -25,8 +25,9 @@ export default function CombinedLoginPage() {
         })
         const data = await res.json();
         if(data.success){
-            toast.success("Logged in!")
-            console.log(data.user)
+            toast.success("Logged in!");
+            console.log(data.user);
+            window.location.href = "/";
         }else{
             console.log(data.message)
         }

@@ -16,6 +16,7 @@ import { useContext } from "react"
 
 export function HeaderDropdown() {
     const {user}=useContext(UserContext);
+    // console.log(user)
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
