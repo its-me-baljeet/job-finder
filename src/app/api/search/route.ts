@@ -44,6 +44,13 @@ export async function GET(req: NextRequest) {
 
         const data = await db.openings.findMany({
             where, // Use our dynamically built 'where' object
+            include: {
+                company: {
+                    include:{
+                        owner: true,
+                    }
+                }
+            },
             take: limit,
             skip: (page - 1) * limit,
         });

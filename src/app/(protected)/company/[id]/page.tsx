@@ -13,7 +13,7 @@ export default async function Page({ params }: {
 
     const company = data.data.company;
     const owner = company.owner;
-    // console.log(owner)
+    console.log(owner)
     return (
         <main className="p-5">
             <section className="bg-muted p-5 rounded-md flex flex-col gap-2">
