@@ -2,10 +2,11 @@
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { Job } from "../../../../generated/prisma";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { UserContext } from "../layout";
 
 export default function Page() {
     const [jobTitle, setJobTitle] = useState("");
@@ -14,19 +15,21 @@ export default function Page() {
     const [jobSalary, setJobSalary] = useState("");
     const [jobType, setJobType] = useState("part-time");
     const [employmentType, setEmploymentType] = useState("on-site");
-    const [loading, setLoading]=useState(false)
+    const [loading, setLoading]=useState(false);
+    const {user} = useContext(UserContext)
 
     async function handleSubmit(e:FormEvent){
         e.preventDefault();
         setLoading(true);
         const jSalary= parseInt(jobSalary);
-        const data: Job={
+        const data={
             title: jobTitle,
             description: jobDescription,
             location: jobLocation,
             salary: jSalary,
             job_type: jobType,
-            employment_type: employmentType
+            employment_type: employmentType,
+            company_id: user.company.id
         }
 
         const resp = await fetch("http://localhost:3000/api/job",{

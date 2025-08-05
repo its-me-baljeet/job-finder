@@ -1,8 +1,8 @@
 import JobCard from "@/components/jobCard";
-import { data } from "@/contants/data";
-import Image from "next/image";
 
-export default function Home() {
+export default async function Home() {
+  const res = await fetch("http://localhost:3000/api/search");
+  const data = await res.json();
   const jobs = data.data;
   return (
     <main className="p-5 flex flex-col gap-5">

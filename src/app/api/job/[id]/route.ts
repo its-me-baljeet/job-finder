@@ -9,9 +9,12 @@ export async function GET(req:NextRequest, {params}:{
     const id = params.id;
 
     try{
-        const job = await db.job.findUnique({
+        const job = await db.openings.findUnique({
             where:{
                 id:id
+            },
+            include:{
+                company: true,
             }
         }
         )

@@ -24,29 +24,31 @@ model Job {
   job_type        String @default("on-site")
 }
 
+model Openings {
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  description     String
+  location        String
+  salary          Int
+  employment_type String  @default("fulltime")
+  job_type        String  @default("on-site")
+  company_id      String  @db.ObjectId
+  company         Company @relation(fields: [company_id], references: [id])
+}
+
 model User {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   email    String   @unique
   password String
   role     String
   company  Company?
-  // resume   Resume?
 }
 
 model Company {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
-  ownerId     String @unique @db.ObjectId
-  owner       User   @relation(fields: [ownerId], references: [id])
+  ownerId     String     @unique @db.ObjectId
+  owner       User       @relation(fields: [ownerId], references: [id])
+  jobs        Openings[]
 }
-
-// model Resume {
-//   id             String @id @default(auto()) @map("_id") @db.ObjectId
-//   qualification  String
-//   education      String
-//   cgpa           String
-//   graduationYear String
-//   ownerId        String @unique @db.ObjectId
-//   owner          User   @relation(fields: [ownerId], references: [id])
-// }

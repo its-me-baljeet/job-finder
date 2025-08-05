@@ -37,6 +37,7 @@ export default async function Page({ params }: {
                     <CardDescription className=" text-sm tracking-wide">{job.description}</CardDescription>
                 </CardContent>
                 <CardFooter>
+                    <p>{job.company.title}</p>
                     {/* <p>Card Footer</p> */}
                     {/* <section className="w-full flex items-center justify-between">
 

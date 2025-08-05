@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
             })
         }
 
-        const sugg = await db.job.findMany({
+        const sugg = await db.openings.findMany({
             where: {
                 title: {
                     contains: q,

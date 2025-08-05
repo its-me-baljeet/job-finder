@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/button";
 import { data } from "@/contants/data";
 import db from "@/services/prisma";
 
-export default function Page(){
+export default function Page() {
     async function addData() {
         'use server';
-        const newData = data.data.map(item=>{
-            return(
+        const newData = data.data.map(item => {
+            return (
                 {
                     title: item.job_title,
                     description: item.job_description,
@@ -17,15 +17,15 @@ export default function Page(){
                 }
             )
         })
-        try{
-            await db.job.createMany({
+        try {
+            await db.openings.createMany({
                 data: newData
             })
-        }catch(error){
+        } catch (error) {
             console.error(error);
         }
     }
-    return(
+    return (
         <Button variant="default" onClick={addData} >Add Data to DB</Button>
     )
 }
