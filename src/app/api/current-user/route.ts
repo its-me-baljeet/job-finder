@@ -1,7 +1,5 @@
 import { getUserFromCookies } from "@/hooks/helper";
-import { verifytoken } from "@/services/jwt";
 import db from "@/services/prisma";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET(){

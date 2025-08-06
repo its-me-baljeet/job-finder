@@ -6,11 +6,12 @@ import JobCard from "./jobCard";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Badge } from "./ui/badge";
+import { Review } from "../../generated/prisma";
 
 export default function CompanyReviewsAndJobContainer({ user_id, company_id }:
     { user_id: string, company_id: string }
 ) {
-    const [listedJobs, setListedJobs] = useState([]);
+    const [listedJobs, setListedJobs] = useState<Review[]>([]);
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(false);
     useEffect(() => {

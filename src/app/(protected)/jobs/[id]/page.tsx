@@ -1,7 +1,9 @@
 import EditDelete from "@/components/edit-delete-company";
+import JobApplyButton from "@/components/jobApplyBtn";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import ViewJobApplications from "@/components/viewJobApplications";
 import { MapPin, Save, Send } from "lucide-react";
 
 export default async function Page({ params }: {
@@ -20,14 +22,15 @@ export default async function Page({ params }: {
     }
     return (
         <main className="p-5">
-            <Card className="h-full shadow-md">
+            <Card className="h-full w-full shadow-md">
                 <CardHeader>
                     <div className="flex gap-5">
                         <CardTitle className="font-semibold text-2xl">{job.title}</CardTitle>
 
                         <div className="ml-auto flex gap-3 items-center">
                             <Button variant="secondary" className="flex"><Save />Save</Button>
-                            <Button variant="secondary" className="flex"><Send />Apply</Button>
+                            <JobApplyButton job={job}/>
+                            <ViewJobApplications job={job}/>
 
                         </div>
                     </div>
