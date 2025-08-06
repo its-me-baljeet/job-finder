@@ -1,13 +1,7 @@
-
 import CompanyReviewsAndJobContainer from "@/components/company-reviews-job-container";
 import DeleteCompanyButton from "@/components/deleteCompanyBtn";
-import { toast } from "sonner";
 
-export default async function Page({ params }: {
-    params: Promise<{
-        id: string;
-    }>
-}) {
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
     const ps = await params;
     const id = ps.id;
 
@@ -15,23 +9,37 @@ export default async function Page({ params }: {
     const data = await res.json();
 
     if (!data.success) {
-        toast.error(data.message);
-        return <p>No data found!</p>
+        console.error(data.message);
+        return <p className="text-center text-destructive mt-10">No data found!</p>;
     }
+
     const company = data.data;
     const owner = company.owner;
+
     return (
-        <main className="flex flex-col gap-5 p-5">
-            <section className="bg-muted p-5 rounded-md flex flex-col gap-2">
-                <h2 className="text-xl font-medium">{company.title}</h2>
-                <p className="font-medium text-muted-foreground">{company.description}</p>
+        <main className="p-4 md:p-8 max-w-5xl mx-auto flex flex-col gap-6">
+            <section className="bg-muted rounded-xl p-4 md:p-6 shadow-sm space-y-4">
+                <div className="space-y-2">
+                    <h2 className="text-2xl font-semibold">{company.title}</h2>
+                    <p className="text-muted-foreground">{company.description}</p>
+                </div>
 
-                <hr />
+                <hr className="border-border" />
 
-                <h2 className="text-muted-foreground">Owner : <span className="text-foreground">{owner.email}</span></h2>
-                <DeleteCompanyButton id={owner.id} />
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <h3 className="text-muted-foreground">
+                        Owner: <span className="text-foreground font-medium">{owner.email}</span>
+                    </h3>
+                    <DeleteCompanyButton id={owner.id} />
+                </div>
             </section>
-            <CompanyReviewsAndJobContainer user_id={owner.id} company_id={company.id} />
+
+            <section className="w-full">
+                <CompanyReviewsAndJobContainer
+                    user_id={owner.id}
+                    company_id={company.id}
+                />
+            </section>
         </main>
-    )
+    );
 }

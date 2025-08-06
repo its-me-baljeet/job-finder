@@ -7,6 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Badge } from "./ui/badge";
 import { Company, Job, Review, User } from "../../generated/prisma";
+import { toast } from "sonner";
 
 export default function CompanyReviewsAndJobContainer({ user_id, company_id }:
     { user_id: string, company_id: string }
@@ -41,7 +42,31 @@ export default function CompanyReviewsAndJobContainer({ user_id, company_id }:
         }
         getReviews();
         getListedJobs();
-    }, [])
+    }, []);
+
+    // In your CompanyReviewsAndJobContainer.tsx component
+
+const handleDeleteReview = async (reviewId: string) => {
+    try {
+        const res = await fetch(`/api/company/review/${company_id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ reviewId: reviewId }),
+        });
+
+        const data = await res.json();
+        if (data.success) {
+            toast.success(data.message);
+            setReviews(prevReviews => prevReviews.filter(review => review.id !== reviewId));
+        } else {
+            toast.error(data.message);
+        }
+    } catch (error) {
+        toast.error("An unexpected error occurred.");
+    }
+};
     return (
         <Tabs defaultValue="account" className="w-full">
             <TabsList>
@@ -73,9 +98,7 @@ export default function CompanyReviewsAndJobContainer({ user_id, company_id }:
                                     {rev.content}
                                     </CardContent>
                                     <CardFooter className="flex gap-2">
-                                        <Heart />
-                                        <MessageCircle />
-                                        <Trash2 />
+                                        <Trash2 onClick={()=>handleDeleteReview(rev.id)}/>
                                     </CardFooter>
                                 </Card>
                             )

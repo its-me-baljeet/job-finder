@@ -13,8 +13,8 @@ export default function Page() {
     const [jobDescription, setJobDescription] = useState("");
     const [jobLocation, setJobLocation] = useState("");
     const [jobSalary, setJobSalary] = useState("");
-    const [jobType, setJobType] = useState("part-time");
-    const [employmentType, setEmploymentType] = useState("on-site");
+    const [jobType, setJobType] = useState("on-site");
+    const [employmentType, setEmploymentType] = useState("part-time");
     const [loading, setLoading] = useState(false);
     const { user } = useContext(UserContext)
 

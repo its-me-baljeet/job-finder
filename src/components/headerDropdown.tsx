@@ -4,69 +4,69 @@ import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import { User2 } from "lucide-react"
-import { cookies } from "next/headers"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useContext } from "react"
+import { toast } from "sonner"
 
 export function HeaderDropdown() {
     const router = useRouter();
-    const {user}=useContext(UserContext);
+    const { user } = useContext(UserContext);
     // console.log(user)
-    async function handleLogout(){
-        // const userCookies = await cookies();
-        // userCookies.delete('token');
-        // router.push("/login");
+    async function handleLogout() {
+        const res = await fetch('/api/logout', { method: 'POST' });
+        const data = await res.json();
+        if (data.success) {
+            toast.success(data.message);
+            window.location.href="/";
+        } else {
+            toast.error("Logout failed");
+        }
+    }
+    async function handleLogin() {
+        router.push("/login");
     }
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline"><User2/></Button>
+                <Button variant="outline"><User2 /></Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="start">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        Profile
-                        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                </DropdownMenuGroup>
+                {user && <DropdownMenuLabel>{user?.email}</DropdownMenuLabel>}
                 <DropdownMenuSeparator />
                 {
-                    user?.company?
-                    <DropdownMenuItem>
-                        <Link href={"/add-job"}>
-                            + Add Job
-                        </Link>
-                    </DropdownMenuItem>
-                    :
-                    <DropdownMenuItem>
-                        <Link href={"/add-company"}>
-                            + Add Company
-                        </Link>
-                    </DropdownMenuItem>
+                    user && (user?.company ?
+                        <DropdownMenuItem onClick={()=>router.push("/add-job")}>
+                                + Add Job
+                        </DropdownMenuItem>
+                        :
+                        <DropdownMenuItem onClick={()=>router.push("/add-company")}>
+                                + Add Company
+                        </DropdownMenuItem>)
 
                 }
                 {
-                    user?.company&&
-                    <DropdownMenuItem>
-                        <Link href={"/company/"+user.id}>
-                            View Company
-                        </Link>
+                    user?.company &&
+                    <DropdownMenuItem onClick={() => router.push("/company/" + user.company.id)}>
+                        View Company
                     </DropdownMenuItem>
                 }
-                <DropdownMenuItem onClick={handleLogout}>
-                    Log out
-                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-                </DropdownMenuItem>
+                {
+                    !user ?
+                        <DropdownMenuItem onClick={handleLogin}>
+                            Log in
+                        </DropdownMenuItem>
+                        :
+                        <DropdownMenuItem onClick={handleLogout}>
+                            Log out
+                        </DropdownMenuItem>
+                }
             </DropdownMenuContent>
         </DropdownMenu>
     )

@@ -1,10 +1,10 @@
-import EditDelete from "@/components/edit-delete-company";
+import EditDelete from "@/components/edit-delete-job";
 import JobApplyButton from "@/components/jobApplyBtn";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import ViewJobApplications from "@/components/viewJobApplications";
-import { MapPin, Save, Send } from "lucide-react";
+import { Briefcase, CircleDollarSign, Clock, MapPin } from "lucide-react";
+import Link from "next/link";
 
 export default async function Page({ params }: {
     params: Promise<{
@@ -13,51 +13,79 @@ export default async function Page({ params }: {
 }) {
     const ps = await params
     const id = ps.id;
-    const res = await fetch("http://localhost:3000/api/job/" + id);
-    const data = await res.json();
-
-    const job = data.data;
-    if (!job) {
-        return <p>No data found!</p>
+    let job;
+    try {
+        const res = await fetch(`http://localhost:3000/api/job/${id}`);
+        const data = await res.json();
+        if (!data.success) {
+            return <p className="text-center mt-10">Job not found.</p>;
+        }
+        job = data.data;
+    } catch (error) {
+        return <p className="text-center mt-10">Failed to load job data.</p>;
     }
+    
+    if (!job) {
+        return <p className="text-center mt-10">No data found!</p>
+    }
+
     return (
-        <main className="p-5">
-            <Card className="h-full w-full shadow-md">
+        <main className="container mx-auto px-4 py-8">
+            <Card className="max-w-4xl mx-auto shadow-lg">
                 <CardHeader>
-                    <div className="flex gap-5">
-                        <CardTitle className="font-semibold text-2xl">{job.title}</CardTitle>
-
-                        <div className="ml-auto flex gap-3 items-center">
-                            <Button variant="secondary" className="flex"><Save />Save</Button>
-                            <JobApplyButton job={job}/>
-                            <ViewJobApplications job={job}/>
-
+                    <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <CardTitle className="text-3xl font-bold">{job.title}</CardTitle>
+                            <CardDescription className="mt-1">
+                                Posted by <Link href={`/company/${job.company.id}`} className="font-medium text-primary hover:underline">{job.company.title}</Link>
+                            </CardDescription>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <JobApplyButton job={job} />
+                            <ViewJobApplications job={job} />
                         </div>
                     </div>
-                    <p className="flex gap-2 text-sm"><span><MapPin size={20} /></span>{job.location}</p>
-                    <p>Salary <span>₹{job.salary}</span></p>
-                    <Badge variant="default" className="h-fit w-fit mt-2">{job.job_type}</Badge>
                 </CardHeader>
                 <CardContent>
-                    <CardDescription className=" text-sm tracking-wide">{job.description}</CardDescription>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 rounded-lg border bg-muted p-4 my-6">
+                        <div className="flex items-center gap-3">
+                            <MapPin className="h-6 w-6 text-muted-foreground" />
+                            <div>
+                                <p className="text-sm text-muted-foreground">Location</p>
+                                <p className="font-semibold">{job.location}</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <div>
+                                <p className="text-sm text-muted-foreground">Salary</p>
+                                <p className="font-semibold">₹{job.salary.toLocaleString()}</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <Briefcase className="h-6 w-6 text-muted-foreground" />
+                            <div>
+                                <p className="text-sm text-muted-foreground">Job Type</p>
+                                <Badge variant="outline">{job.job_type}</Badge>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <Clock className="h-6 w-6 text-muted-foreground" />
+                            <div>
+                                <p className="text-sm text-muted-foreground">Employment</p>
+                                <Badge variant="outline">{job.employment_type}</Badge>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 className="text-xl font-semibold mb-2">About the Role</h3>
+                        <div className="prose prose-stone dark:prose-invert max-w-none">
+                            <p>{job.description}</p>
+                        </div>
+                    </div>
                 </CardContent>
                 <CardFooter>
-                    <p>{job.company.title}</p>
-                    {/* <p>Card Footer</p> */}
-                    {/* <section className="w-full flex items-center justify-between">
-
-                        <div className="flex items-center gap-2 border p-2 rounded-md">
-                            <Avatar className="">
-                                <AvatarImage src={job.employer_logo ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgs2DOOnn9pY67TodjACV0st9VwO1Q-ZdxOA&s"} height={35} width={35} className="rounded-full" />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                            <p >{job.employer_name}</p>
-
-                        </div>
-                        <CardAction className="ml-auto self-center">view</CardAction>
-                    </section> */}
+                    <EditDelete job={job} />
                 </CardFooter>
-                <EditDelete job={job}/>
             </Card>
         </main>
     )

@@ -1,5 +1,6 @@
 import JobCard from "@/components/jobCard";
 import { Company, Job, Openings } from "../../../../generated/prisma";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 export default async function JobsPage({ searchParams }: {
     searchParams: Promise<{
         q: string,

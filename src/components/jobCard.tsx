@@ -2,41 +2,55 @@ import { MapPin } from "lucide-react";
 import Link from "next/link";
 import { Openings, Company } from "../../generated/prisma";
 import { Badge } from "./ui/badge";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle
+} from "./ui/card";
 
-export type OpeningWithCompany = Openings& {company: Company}
-export default function JobCard({ job }: {
-    job: OpeningWithCompany
-}) {
-    // console.log(job);
+export type OpeningWithCompany = Openings & { company: Company };
+
+export default function JobCard({ job }: { job: OpeningWithCompany }) {
     return (
-        <Card className="h-full shadow-md">
-            <CardHeader>
-                <div className="flex gap-5">
-                    <CardTitle>{job.title}</CardTitle>
-                    <Badge variant="default" className="h-fit w-fit ml-auto">{job.employment_type}</Badge>
+        <Card className="h-full shadow-md flex flex-col justify-between">
+            <CardHeader className="space-y-2">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                    <CardTitle className="text-lg">{job.title}</CardTitle>
+                    <Badge variant="default" className="w-fit h-fit">
+                        {job.employment_type}
+                    </Badge>
                 </div>
-                <p className="flex gap-2 text-sm"><span><MapPin size={20} /></span>{job.location}</p>
+
+                <p className="flex items-center gap-1 text-sm text-muted-foreground">
+                    <MapPin size={16} /> {job.location}
+                </p>
             </CardHeader>
+
             <CardContent>
-                <CardDescription className=" line-clamp-2 text-sm tracking-wide">{job.description}</CardDescription>
+                <CardDescription className="line-clamp-3 text-sm text-muted-foreground tracking-wide">
+                    {job.description}
+                </CardDescription>
             </CardContent>
-            <CardFooter>
-                {/* <p>Card Footer</p> */}
-                <section className="w-full flex items-center justify-between">
 
-                    {/* <div className="flex items-center gap-2 border p-2 rounded-md">
-                    <Avatar className="">
-                        <AvatarImage src={job.employer_logo ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgs2DOOnn9pY67TodjACV0st9VwO1Q-ZdxOA&s"} height={35} width={35} className="rounded-full"/>
-                        <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                <p >{job.employer_name}</p>
-
-                </div> */}
-                    <Link href={`/company/${job.company_id}`}>{job.company.title}</Link>
-                    <Link href={`/jobs/${job.id}`} className="ml-auto self-center">view</Link>
-                </section>
+            <CardFooter className="mt-auto pt-4">
+                <div className="flex w-full items-center justify-between text-sm font-medium">
+                    <Link
+                        href={`/company/${job.company_id}`}
+                        className="hover:underline text-primary"
+                    >
+                        {job.company.title}
+                    </Link>
+                    <Link
+                        href={`/jobs/${job.id}`}
+                        className="text-sm text-muted-foreground hover:underline ml-auto"
+                    >
+                        View
+                    </Link>
+                </div>
             </CardFooter>
         </Card>
-    )
+    );
 }

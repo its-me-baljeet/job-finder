@@ -17,6 +17,7 @@ export default function AddReviewForm({ user_id, company_id }:
             user_id,
             company_id
         }
+        setLoading(true);
         const res = await fetch(`http://localhost:3000/api/company/review/${company_id}`, {
             method: "POST",
             body: JSON.stringify(newReview)
@@ -25,9 +26,11 @@ export default function AddReviewForm({ user_id, company_id }:
         if (!data.success) {
             toast.error(data.message);
         } else {
-            setReview(data.data)
+            setReview("");
             toast.success("Review added!");
+            window.location.reload();
         }
+        setLoading(false);
     }
     return (
         <form onSubmit={handleSubmit} className="w-3xl bg-muted p-5 rounded-md flex flex-col gap-5">

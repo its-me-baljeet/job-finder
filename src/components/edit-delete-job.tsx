@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 import { OpeningWithCompany } from "./jobCard";
+import UpdateJobDialog from "./updateJobDialog";
 
 export default function EditDelete({ job }:{
     job: OpeningWithCompany
@@ -27,9 +28,9 @@ export default function EditDelete({ job }:{
     }
     if (user?.company?.id == job?.company?.id) {
         return (
-            <div>
+            <div className="flex gap-5">
                 <Button variant="secondary" onClick={handleDelete}>Delete</Button>
-                <Button variant="secondary">Update</Button>
+                <UpdateJobDialog job={job} />
             </div>
         )
     } else return null;

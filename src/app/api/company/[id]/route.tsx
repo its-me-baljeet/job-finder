@@ -41,18 +41,18 @@ export async function DELETE(req:NextRequest,{params}:{
         console.log(user?.company)
         const company = await db.company.findUnique({
             where:{
-                ownerId: id
+                id: id
             }
         })
         if(company?.ownerId == user?.id){
             const res = await db.company.delete({
                 where:{
-                    ownerId: id
+                    id: id
                 }
             })
             return NextResponse.json({
                 success:true,
-                message:`company: ${company?.title} deleted!`
+                message:`company: ${res?.title} deleted!`
             })
         }
         return NextResponse.json({

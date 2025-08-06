@@ -11,6 +11,8 @@ import { toast } from "sonner";
 export default function Page(){
     const [email, setEmail]= useState("");
     const [password, setPassword]= useState("");
+    const [loading, setLoading]= useState(false);
+    const router= useRouter();
 
     async function handleSignup(e: FormEvent){
         e.preventDefault();
@@ -19,7 +21,7 @@ export default function Page(){
             email,
             password
         };
-
+        setLoading(true);
         const res = await fetch("http://localhost:3000/api/signup",{
             method:"POST",
             body: JSON.stringify(user)
@@ -33,19 +35,13 @@ export default function Page(){
         }else{
             toast.error(data.message);      
         }
+        setLoading(false);
     }
 
     return(
     <div className="flex h-screen w-full items-center justify-center bg-background">
-      <Tabs defaultValue="user" className="w-full max-w-md">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="user">User</TabsTrigger>
-          <TabsTrigger value="admin">Admin</TabsTrigger>
-        </TabsList>
-
-        {/* User Login Form */}
-        <TabsContent value="user">
-          <Card>
+      
+          <Card className="w-2/3 md:w-1/3">
             <CardHeader>
               <CardTitle>Register</CardTitle>
               <CardDescription>
@@ -62,37 +58,11 @@ export default function Page(){
                 <Input id="user-password" value={password} type="password" onChange={e=>setPassword(e.target.value)} />
               </div>
             </CardContent>
-            <CardFooter>
-              <Button className="w-full" onClick={handleSignup}>Register</Button>
+            <CardFooter className="flex flex-col">
+              <Button className="w-full" onClick={handleSignup} disabled={loading}>Register</Button>
+            <p  className="flex w-full items-center">Already have an Account? <Button variant="link" onClick={()=>router.push("/login")}>Login</Button></p>
             </CardFooter>
           </Card>
-        </TabsContent>
-
-        {/* Admin Login Form */}
-        <TabsContent value="admin">
-          <Card>
-            <CardHeader>
-              <CardTitle>Admin Login</CardTitle>
-              <CardDescription>
-                Enter admin credentials for administrative access.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-1">
-                <Label htmlFor="admin-email">Admin Email</Label>
-                <Input id="admin-email" type="email" placeholder="admin@example.com" />
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="admin-password">Password</Label>
-                <Input id="admin-password" type="password" />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full" variant="destructive">Login as Admin</Button>
-            </CardFooter>
-          </Card>
-        </TabsContent>
-      </Tabs>
     </div>
     )
 }
