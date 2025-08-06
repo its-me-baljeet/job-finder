@@ -1,3 +1,4 @@
+import EditDelete from "@/components/edit-delete-company";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +9,8 @@ export default async function Page({ params }: {
         id: string,
     }
 }) {
-    const id = params.id;
+    const ps = await params
+    const id = ps.id;
     const res = await fetch("http://localhost:3000/api/job/" + id);
     const data = await res.json();
 
@@ -52,6 +54,7 @@ export default async function Page({ params }: {
                         <CardAction className="ml-auto self-center">view</CardAction>
                     </section> */}
                 </CardFooter>
+                <EditDelete job={job}/>
             </Card>
         </main>
     )

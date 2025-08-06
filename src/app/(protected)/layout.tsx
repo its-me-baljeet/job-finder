@@ -19,9 +19,8 @@ export default function Layout({ children }: {
         getUser();
     }, []);
     return (
-        <div>
+        <div className="">
             <UserContext.Provider value={{ user, setUser }}>
-
                 <Header />
                 {children}
                 <Toaster position="top-center" />

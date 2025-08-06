@@ -1,9 +1,13 @@
 import JobCard from "@/components/jobCard";
+import db from "@/services/prisma";
 
 export default async function Home() {
-  const res = await fetch("http://localhost:3000/api/search");
-  const data = await res.json();
-  const jobs = data.data;
+  const res = await db.openings.findMany({
+    include: {
+      company: true
+    }
+  });
+  const jobs = res;
   // console.log(jobs)
   return (
     <main className="p-5 flex flex-col gap-5">

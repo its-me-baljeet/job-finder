@@ -1,5 +1,5 @@
 'use client';
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
 
 import {
     Sidebar,
@@ -7,15 +7,13 @@ import {
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
-import { Label } from "./ui/label"
+    SidebarMenu
+} from "@/components/ui/sidebar";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "./ui/button";
 import { useState } from "react";
+import { Button } from "./ui/button";
+import { Label } from "./ui/label";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Slider } from "./ui/slider";
 
 // Menu items.

@@ -1,8 +1,7 @@
 'use client'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Loader2, Search } from "lucide-react"
-import { title } from "process"
+import { Search } from "lucide-react"
 import { useEffect, useState } from "react"
 
 export function SearchInput() {

@@ -2,35 +2,38 @@ import { getUserFromCookies } from "@/hooks/helper";
 import db from "@/services/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest, {params}:{
+export async function GET(req:NextRequest,{params}:{
     params: {
         id: string;
     }
 }){
     const id= params.id;
     const company = await db.company.findUnique({
-        where:{
-            ownerId: id,
+        where: {
+            id: id,
         },
-        include:{
+        include: {
             owner: true,
         }
     });
-
+    
+    if (!company) {
+        return NextResponse.json({
+            success: false,
+            message: "Company not found",
+            data: null
+        });
+    }
     return NextResponse.json({
         success: true,
-        data: {
-            company
-        }
+        data: company
     })
 }
 
-export async function DELETE(req:NextRequest, {params}:{params:{id:string}}){
+export async function DELETE(req:NextRequest,{params}:{params:{id:string}}){
     try{
-
         const id = params.id;
         const user = await getUserFromCookies();
-        // console.log(id)
         console.log(user?.company)
         const company = await db.company.findUnique({
             where:{
