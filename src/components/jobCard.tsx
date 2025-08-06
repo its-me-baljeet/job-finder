@@ -1,11 +1,12 @@
 import { MapPin } from "lucide-react";
 import Link from "next/link";
-import { Job, Openings } from "../../generated/prisma";
+import { Openings, Company } from "../../generated/prisma";
 import { Badge } from "./ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 
+export type OpeningWithCompany = Openings& {company: Company}
 export default function JobCard({ job }: {
-    job: Openings
+    job: OpeningWithCompany
 }) {
     // console.log(job);
     return (

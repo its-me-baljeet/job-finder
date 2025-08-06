@@ -2,11 +2,12 @@ import db from "@/services/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest,{params}:{
-    params: {
+    params: Promise<{
         id: string,
-    }
+    }>
 }){
-    const companyId = params.id;
+    const pr = await params;
+    const companyId = pr.id;
 
     try{
         const reviews = await db.review.findMany({
@@ -31,11 +32,12 @@ export async function GET(req: NextRequest,{params}:{
 }
 
 export async function POST(req: NextRequest, {params}:{
-    params: {
+    params: Promise<{
         id: string,
-    }
+    }>
 }){
-    const companyId = params.id;
+    const pr = await params;
+    const companyId = pr.id;
     try{
         const body = await req.json();
         const res = await db.review.create({

@@ -1,3 +1,4 @@
+'use client'
 import { UserContext } from "@/app/(protected)/layout"
 import { Button } from "@/components/ui/button"
 import {
@@ -11,12 +12,20 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import { User2 } from "lucide-react"
+import { cookies } from "next/headers"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useContext } from "react"
 
 export function HeaderDropdown() {
+    const router = useRouter();
     const {user}=useContext(UserContext);
     // console.log(user)
+    async function handleLogout(){
+        // const userCookies = await cookies();
+        // userCookies.delete('token');
+        // router.push("/login");
+    }
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -54,7 +63,7 @@ export function HeaderDropdown() {
                         </Link>
                     </DropdownMenuItem>
                 }
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
                     Log out
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>

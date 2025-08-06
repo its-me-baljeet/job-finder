@@ -1,12 +1,17 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { LoaderPinwheelIcon } from "lucide-react";
+import { Application, Company, Openings, User } from "../../generated/prisma";
+import { UserContext } from "@/app/(protected)/layout";
 
-export default function ViewJobApplications({ job }) {
-    const [applicants, setApplicants] = useState([]);
+export default function ViewJobApplications({ job }:{
+    job: Openings& {company: Company}
+}) {
+    const {user} = useContext(UserContext);
+    const [applicants, setApplicants] = useState<(Application & {user: User})[]>([]);
     const [loading, setLoading] = useState(false);
     useEffect(() => {
         async function getApplications() {
@@ -19,7 +24,8 @@ export default function ViewJobApplications({ job }) {
             }
         }
         getApplications();
-    }, [])
+    }, []);
+    if(user?.company.id!=job.company_id)return null;
     return (
         <Dialog>
             <DialogTrigger>view job applicants</DialogTrigger>

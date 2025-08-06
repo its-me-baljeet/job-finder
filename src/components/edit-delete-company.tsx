@@ -3,8 +3,11 @@ import { UserContext } from "@/app/(protected)/layout";
 import { useContext } from "react";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
+import { OpeningWithCompany } from "./jobCard";
 
-export default function EditDelete({ job }) {
+export default function EditDelete({ job }:{
+    job: OpeningWithCompany
+}) {
     const { user } = useContext(UserContext);
 
     async function handleDelete() {

@@ -7,9 +7,9 @@ import ViewJobApplications from "@/components/viewJobApplications";
 import { MapPin, Save, Send } from "lucide-react";
 
 export default async function Page({ params }: {
-    params: {
+    params: Promise<{
         id: string,
-    }
+    }>
 }) {
     const ps = await params
     const id = ps.id;

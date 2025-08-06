@@ -2,8 +2,11 @@
 import { Send } from "lucide-react";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
+import { Openings } from "../../generated/prisma";
 
-export default function JobApplyButton({ job }) {
+export default function JobApplyButton({ job }:{
+    job: Openings
+}) {
     async function handleSubmit() {
         try {
             const res = await fetch(`/api/job/apply/`+job.id, {

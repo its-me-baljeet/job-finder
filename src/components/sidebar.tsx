@@ -74,8 +74,8 @@ export function AppSidebar() {
                                 <h2>Employment Type</h2>
                                 <RadioGroup defaultValue="full-time" value={employmentType}>
                                     <div className="flex items-center space-x-2" >
-                                        <RadioGroupItem value="fulltime" id="fulltime" onClick={() => setEmploymentType("fulltime")} />
-                                        <Label htmlFor="fulltime">Full Time</Label>
+                                        <RadioGroupItem value="full-time" id="full-time" onClick={() => setEmploymentType("full-time")} />
+                                        <Label htmlFor="full-time">Full Time</Label>
                                     </div>
                                     <div className="flex items-center space-x-2" >
                                         <RadioGroupItem value="part-time" id="part-time" onClick={() => setEmploymentType("part-time")} />

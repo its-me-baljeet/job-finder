@@ -3,37 +3,43 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react"
 import { useEffect, useState } from "react"
+import { Openings } from "../../generated/prisma"
 
 export function SearchInput() {
   const [input, setInput] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState<Openings[]>([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    async function getSuggestions() {
-      const res = await fetch("http://localhost:3000/api/search/suggestion?q=" + input);
-      const data = await res.json();
+useEffect(() => {
+  async function getSuggestions() {
+    const res = await fetch("http://localhost:3000/api/search/suggestion?q=" + input);
+    const data = await res.json();
 
-      if (data.success) {
-        setSuggestions(data.suggestions);
-        console.log(data.suggestions);
-      } else {
-        setSuggestions([]);
-      }
+    if (data.success) {
+      setSuggestions(data.suggestions);
+      console.log(data.suggestions);
+    } else {
+      setSuggestions([]);
     }
-    let x;
-    if (input) {
-      x = setTimeout(() => {
-        setLoading(true);
-        getSuggestions();
-        setLoading(false);
-      }, 800);
-    } else { setSuggestions([]) }
+  }
 
-    return () => {
-      if (x) clearTimeout(x);
-    }
-  }, [input])
+  let x: ReturnType<typeof setTimeout>;
+  
+  if (input) {
+    x = setTimeout(() => {
+      setLoading(true);
+      getSuggestions();
+      setLoading(false);
+    }, 800);
+  } else {
+    setSuggestions([]);
+  }
+
+  return () => {
+    if (x) clearTimeout(x);
+  };
+}, [input]);
+
   return (
     <section className="relative w-full">
       <form className="flex w-full max-w-sm items-center gap-2" action={"/jobs"} method="GET">

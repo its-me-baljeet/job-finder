@@ -15,14 +15,19 @@ export default function Page() {
     const [jobSalary, setJobSalary] = useState("");
     const [jobType, setJobType] = useState("part-time");
     const [employmentType, setEmploymentType] = useState("on-site");
-    const [loading, setLoading]=useState(false);
-    const {user} = useContext(UserContext)
+    const [loading, setLoading] = useState(false);
+    const { user } = useContext(UserContext)
 
-    async function handleSubmit(e:FormEvent){
+    async function handleSubmit(e: FormEvent) {
         e.preventDefault();
         setLoading(true);
-        const jSalary= parseInt(jobSalary);
-        const data={
+        if (!user) {
+            toast.error("User not found. Please log in.");
+            setLoading(false);
+            return;
+        }
+        const jSalary = parseInt(jobSalary);
+        const data = {
             title: jobTitle,
             description: jobDescription,
             location: jobLocation,
@@ -32,15 +37,15 @@ export default function Page() {
             company_id: user.company.id
         }
 
-        const resp = await fetch("http://localhost:3000/api/job",{
+        const resp = await fetch("http://localhost:3000/api/job", {
             method: "POST",
             body: JSON.stringify(data)
         });
 
-        const respData= await resp.json();
-        if(respData.success){
+        const respData = await resp.json();
+        if (respData.success) {
             toast.success("Job added!");
-        }else{
+        } else {
             toast.error("Can't add job!");
         }
         setLoading(false);

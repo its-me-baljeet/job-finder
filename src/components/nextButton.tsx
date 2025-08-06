@@ -20,6 +20,6 @@ export default function(){
         router.push(url);
     }
     return(
-        <button  onClick={handleNext}><ArrowRightCircleIcon/></button>
+        <button  onClick={handleNext}><ArrowRightCircleIcon/>Next</button>
     )
 }

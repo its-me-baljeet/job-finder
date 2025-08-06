@@ -2,11 +2,12 @@ import db from "@/services/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, {params}:{
-    params: {
+    params: Promise<{
         id: string,
-    }
+    }>
 }){
-    const id = params.id;
+    const pr = await params;
+    const id = pr.id;
     try{
         const jobs = await db.openings.findMany({
             where: {

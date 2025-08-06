@@ -2,11 +2,12 @@ import db from "@/services/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req:NextRequest, {params}:{
-    params:{
+    params:Promise<{
         id: string;
-    }
+    }>
 }){
-    const id = params.id;
+    const pr = await params
+    const id = pr.id;
 
     try{
         const job = await db.openings.findUnique({
@@ -39,9 +40,14 @@ export async function GET(req:NextRequest, {params}:{
 
 }
 
-export async function DELETE(req: NextRequest, {params}){
+export async function DELETE(req: NextRequest, {params}:{
+    params: Promise<{
+        id: string
+    }>
+}){
     try{
-        const jobId = params.id;
+        const pr = await params;
+        const jobId = pr.id;
         const res = await db.openings.delete({
             where:{
                 id: jobId,
@@ -60,8 +66,13 @@ export async function DELETE(req: NextRequest, {params}){
     }
 }
 
-export async function POST(req: NextRequest, {params}){
-    const jobId = params.id;
+export async function POST(req: NextRequest, {params}:{
+    params: Promise<{
+        id: string
+    }>
+}){
+    const pr = await params
+    const jobId = pr.id;
     const body = await req.json();
     try{
         const res = await db.openings.update({

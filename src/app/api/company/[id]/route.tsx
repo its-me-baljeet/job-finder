@@ -3,11 +3,12 @@ import db from "@/services/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req:NextRequest,{params}:{
-    params: {
+    params: Promise<{
         id: string;
-    }
+    }>
 }){
-    const id= params.id;
+    const pr = await params;
+    const id= pr.id;
     const company = await db.company.findUnique({
         where: {
             id: id,
@@ -30,9 +31,12 @@ export async function GET(req:NextRequest,{params}:{
     })
 }
 
-export async function DELETE(req:NextRequest,{params}:{params:{id:string}}){
+export async function DELETE(req:NextRequest,{params}:{
+    params:Promise<{id:string}>
+}){
     try{
-        const id = params.id;
+        const pr = await params;
+        const id = pr.id;
         const user = await getUserFromCookies();
         console.log(user?.company)
         const company = await db.company.findUnique({

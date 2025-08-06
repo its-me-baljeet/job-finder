@@ -4,9 +4,9 @@ import DeleteCompanyButton from "@/components/deleteCompanyBtn";
 import { toast } from "sonner";
 
 export default async function Page({ params }: {
-    params: {
+    params: Promise<{
         id: string;
-    }
+    }>
 }) {
     const ps = await params;
     const id = ps.id;

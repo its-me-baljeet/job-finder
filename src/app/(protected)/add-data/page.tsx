@@ -18,7 +18,7 @@ export default function Page() {
             )
         })
         try {
-            await db.openings.createMany({
+            await db.job.createMany({
                 data: newData
             })
         } catch (error) {

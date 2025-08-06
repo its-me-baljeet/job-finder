@@ -1,28 +1,32 @@
 import JobCard from "@/components/jobCard";
-import { Job } from "../../../../generated/prisma";
-import NextButton from "@/components/nextButton";
+import { Company, Job, Openings } from "../../../../generated/prisma";
 export default async function JobsPage({ searchParams }: {
-    searchParams: {
+    searchParams: Promise<{
         q: string,
         jt: string,
         et: string,
         ms: string,
         page: string,
-    }
+    }>
 }) {
     const params = await searchParams;
     const q = params.q;
-    const jt = params.jt || "remote";
-    const et = params.et || "fulltime";
-    const ms = params.ms ? Number.parseInt(params.ms) : 100000;
-    const page = params.page? Number.parseInt(params.page):1;
-    const res = await fetch(`http://localhost:3000/api/search?q=${q}&jt=${jt}&et=${et}&ms=${ms}&page=${page}`);
+    const jt = params.jt;
+    const et = params.et;
+    const ms = params.ms;
+    const page = params.page || 1;
+    const queryparams = new URLSearchParams();
+    if(q) queryparams.append('q',q);
+    if(jt) queryparams.append('jt',jt);
+    if(et) queryparams.append('et',et);
+    if(ms) queryparams.append('ms',ms.toString());
+    if(page!==1) queryparams.append('page', page.toString());
+    const res = await fetch(`http://localhost:3000/api/search?${queryparams.toString()}`)
     const data = await res.json();
-    let jobs:Job[];
-    if(!data.success){
-        jobs=[]
+    let jobs:(Openings&{company: Company})[] =[];
+    if(data.success){
+        jobs=data.data
     }
-    jobs= data.data;
     // console.log(jobs)
     return (
         <main className="p-5">

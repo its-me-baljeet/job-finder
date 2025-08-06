@@ -2,17 +2,17 @@
 import { Heart, LucideLoaderPinwheel, MessageCircle, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import AddReviewForm from "./addReviewForm";
-import JobCard from "./jobCard";
+import JobCard, { OpeningWithCompany } from "./jobCard";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Badge } from "./ui/badge";
-import { Review } from "../../generated/prisma";
+import { Company, Job, Review, User } from "../../generated/prisma";
 
 export default function CompanyReviewsAndJobContainer({ user_id, company_id }:
     { user_id: string, company_id: string }
 ) {
-    const [listedJobs, setListedJobs] = useState<Review[]>([]);
-    const [reviews, setReviews] = useState([]);
+    const [listedJobs, setListedJobs] = useState<OpeningWithCompany[]>([]);
+    const [reviews, setReviews] = useState<(Review&{user: User})[]>([]);
     const [loading, setLoading] = useState(false);
     useEffect(() => {
         async function getListedJobs() {

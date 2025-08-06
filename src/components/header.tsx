@@ -1,8 +1,7 @@
 import Link from "next/link";
+import { HeaderDropdown } from "./headerDropdown";
 import { ModeToggle } from "./modeToggleBtn";
 import { SearchInput } from "./searchInput";
-import { HeaderDropdown } from "./headerDropdown";
-import { User } from "../../generated/prisma";
 
 export default function Header() {
     return (

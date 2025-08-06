@@ -8,7 +8,6 @@ export default async function Home() {
     }
   });
   const jobs = res;
-  // console.log(jobs)
   return (
     <main className="p-5 flex flex-col gap-5">
       <h2>All Jobs</h2>
