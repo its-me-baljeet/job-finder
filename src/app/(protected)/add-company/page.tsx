@@ -7,30 +7,30 @@ import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 
 export default function Page() {
-    const [name, setName]= useState("");
-    const [description, setDescription]= useState("");
-    const [loading, setLoading]=useState(false);
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    async function handleSubmit(e:FormEvent){
+    async function handleSubmit(e: FormEvent) {
         e.preventDefault();
         setLoading(true);
 
         const company = {
-            name, 
+            name,
             description
         }
-        const res = await fetch("http://localhost:3000/api/company",{
-            method:"POST",
+        const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/company`, {
+            method: "POST",
             body: JSON.stringify(company)
         })
         const data = await res.json();
-        if(data.success){
+        if (data.success) {
             toast.success("Company added!");
             router.push("/");
-        }else{
+        } else {
             toast.error(data.message);
-            return ;
+            return;
         }
         setLoading(false);
     }

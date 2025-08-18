@@ -19,7 +19,7 @@ export default function AddReviewForm({ user_id, company_id }:
             likes: 0
         }
         setLoading(true);
-        const res = await fetch(`http://localhost:3000/api/company/review/${company_id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/company/review/${company_id}`, {
             method: "POST",
             body: JSON.stringify(newReview)
         });

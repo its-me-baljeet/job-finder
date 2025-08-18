@@ -22,7 +22,7 @@ export default async function JobsPage({ searchParams }: {
     if (et) queryparams.append('et', et);
     if (ms) queryparams.append('ms', ms.toString());
     if (page !== 1) queryparams.append('page', page.toString());
-    const res = await fetch(`http://localhost:3000/api/search?${queryparams.toString()}`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/search?${queryparams.toString()}`)
     const data = await res.json();
     let jobs: (Openings & { company: Company })[] = [];
     if (data.success) {

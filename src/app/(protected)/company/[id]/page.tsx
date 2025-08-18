@@ -5,7 +5,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     const ps = await params;
     const id = ps.id;
 
-    const res = await fetch("http://localhost:3000/api/company/" + id);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/company/` + id);
     const data = await res.json();
 
     if (!data.success) {

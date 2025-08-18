@@ -16,7 +16,7 @@ export default function Layout({ children }: {
     const [user, setUser] = useState<User & { company: Company } | null>(null);
     useEffect(() => {
         async function getUser() {
-            const res = await fetch("http://localhost:3000/api/current-user");
+            const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/current-user`);
             const data = await res.json();
             if (data.success) {
                 setUser(data.data);

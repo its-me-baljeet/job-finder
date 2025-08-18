@@ -10,35 +10,35 @@ export function SearchInput() {
   const [suggestions, setSuggestions] = useState<Openings[]>([]);
   const [loading, setLoading] = useState(false);
 
-useEffect(() => {
-  async function getSuggestions() {
-    const res = await fetch("http://localhost:3000/api/search/suggestion?q=" + input);
-    const data = await res.json();
+  useEffect(() => {
+    async function getSuggestions() {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/search/suggestion?q=` + input);
+      const data = await res.json();
 
-    if (data.success) {
-      setSuggestions(data.suggestions);
-      console.log(data.suggestions);
+      if (data.success) {
+        setSuggestions(data.suggestions);
+        console.log(data.suggestions);
+      } else {
+        setSuggestions([]);
+      }
+    }
+
+    let x: ReturnType<typeof setTimeout>;
+
+    if (input) {
+      x = setTimeout(() => {
+        setLoading(true);
+        getSuggestions();
+        setLoading(false);
+      }, 800);
     } else {
       setSuggestions([]);
     }
-  }
 
-  let x: ReturnType<typeof setTimeout>;
-  
-  if (input) {
-    x = setTimeout(() => {
-      setLoading(true);
-      getSuggestions();
-      setLoading(false);
-    }, 800);
-  } else {
-    setSuggestions([]);
-  }
-
-  return () => {
-    if (x) clearTimeout(x);
-  };
-}, [input]);
+    return () => {
+      if (x) clearTimeout(x);
+    };
+  }, [input]);
 
   return (
     <section className="relative w-full">
@@ -55,15 +55,15 @@ useEffect(() => {
       }
       {
         !loading && */}
-        {
-          suggestions.length>0&&
+      {
+        suggestions.length > 0 &&
         <div className="absolute w-full bg-muted p-5 flex flex-col gap-2">{
           suggestions.map(elem => {
             return <p key={elem.id} className="truncate">{elem.title}</p>
           })
         }
         </div>
-        }
+      }
       {/* } */}
     </section>
   )

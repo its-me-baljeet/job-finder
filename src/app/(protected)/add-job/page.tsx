@@ -37,7 +37,7 @@ export default function Page() {
             company_id: user.company.id
         }
 
-        const resp = await fetch("http://localhost:3000/api/job", {
+        const resp = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/job`, {
             method: "POST",
             body: JSON.stringify(data)
         });

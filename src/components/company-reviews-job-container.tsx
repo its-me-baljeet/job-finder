@@ -16,12 +16,12 @@ export default function CompanyReviewsAndJobContainer({ user_id, company_id }:
     const [listedJobs, setListedJobs] = useState<OpeningWithCompany[]>([]);
     const [reviews, setReviews] = useState<(Review & { user: User })[]>([]);
     const [loading, setLoading] = useState(false);
-    const {user} = useContext(UserContext);
+    const { user } = useContext(UserContext);
     useEffect(() => {
         async function getListedJobs() {
             try {
                 setLoading(true);
-                const jobsRes = await fetch("http://localhost:3000/api/company/openings/" + company_id);
+                const jobsRes = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/company/openings/` + company_id);
                 const data = await jobsRes.json();
                 setListedJobs(data.data);
             } catch (err) {
@@ -33,7 +33,7 @@ export default function CompanyReviewsAndJobContainer({ user_id, company_id }:
         async function getReviews() {
             try {
                 setLoading(true);
-                const reviewsRes = await fetch("http://localhost:3000/api/company/review/" + company_id);
+                const reviewsRes = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/company/review/` + company_id);
                 const data = await reviewsRes.json();
                 setReviews(data.data);
             } catch (err) {
@@ -80,7 +80,7 @@ export default function CompanyReviewsAndJobContainer({ user_id, company_id }:
             {loading && <p className="h-full w-full flex justify-center items-center"><LucideLoaderPinwheel className="animate-spin mt-10" /></p>}
             <TabsContent value="password" className="w-full flex flex-col gap-5">
                 <AddReviewForm user_id={user_id} company_id={company_id} />
-                {reviews.length>0?<h2>All Reviews</h2>:<h2>No reviews available!</h2>}
+                {reviews.length > 0 ? <h2>All Reviews</h2> : <h2>No reviews available!</h2>}
                 <section className="flex flex-col gap-3">
                     {
                         reviews.map(rev => {
@@ -97,7 +97,7 @@ export default function CompanyReviewsAndJobContainer({ user_id, company_id }:
                                     <CardFooter className="flex gap-2">
                                         {
                                             <div className="flex gap-1">
-                                                <Heart/>
+                                                <Heart />
                                                 <p>{rev.likes}</p>
                                             </div>
                                         }

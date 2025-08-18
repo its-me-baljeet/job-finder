@@ -19,7 +19,7 @@ export default async function Page({ params }: {
     let userHasApplied = false;
     let job;
     try {
-        const res = await fetch(`http://localhost:3000/api/job/${id}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/job/${id}`);
         const data = await res.json();
         if (!data.success) {
             return <p className="text-center mt-10">Job not found.</p>;
@@ -57,7 +57,7 @@ export default async function Page({ params }: {
                             </CardDescription>
                         </div>
                         <div className="flex items-center gap-2">
-                            <ApplyDeleteButton job={job} hasApplied = {userHasApplied}/>
+                            <ApplyDeleteButton job={job} hasApplied={userHasApplied} />
                             <ViewJobApplications job={job} />
                         </div>
                     </div>
