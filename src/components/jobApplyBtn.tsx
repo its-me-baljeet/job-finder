@@ -4,8 +4,9 @@ import { Button } from "./ui/button";
 import { toast } from "sonner";
 import { Openings } from "../../generated/prisma";
 
-export default function JobApplyButton({ job }:{
-    job: Openings
+export default function JobApplyButton({ job, setUserHasApplied }:{
+    job: Openings,
+    setUserHasApplied: (value: boolean)=>void
 }) {
     async function handleSubmit() {
         try {
@@ -18,6 +19,7 @@ export default function JobApplyButton({ job }:{
 
             if (data.success) {
                 toast.success("Applied successfully");
+                setUserHasApplied(true);
             } else {
                 toast.error(data.message || "Can't apply for the Job");
             }

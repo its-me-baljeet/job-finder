@@ -1,9 +1,11 @@
+import ApplyDeleteButton from "@/components/apply-delete-btn";
 import EditDelete from "@/components/edit-delete-job";
-import JobApplyButton from "@/components/jobApplyBtn";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import ViewJobApplications from "@/components/viewJobApplications";
-import { Briefcase, CircleDollarSign, Clock, MapPin } from "lucide-react";
+import { getUserFromCookies } from "@/hooks/helper";
+import db from "@/services/prisma";
+import { Briefcase, Clock, MapPin } from "lucide-react";
 import Link from "next/link";
 
 export default async function Page({ params }: {
@@ -13,6 +15,8 @@ export default async function Page({ params }: {
 }) {
     const ps = await params
     const id = ps.id;
+    const user = await getUserFromCookies();
+    let userHasApplied = false;
     let job;
     try {
         const res = await fetch(`http://localhost:3000/api/job/${id}`);
@@ -20,11 +24,23 @@ export default async function Page({ params }: {
         if (!data.success) {
             return <p className="text-center mt-10">Job not found.</p>;
         }
+
+        if (user) {
+            const application = await db.application.findMany({
+                where: {
+                    job_id: id,
+                    user_id: user?.id
+                }
+            });
+
+            if (application.length > 0) userHasApplied = true;
+        }
+
         job = data.data;
     } catch (error) {
         return <p className="text-center mt-10">Failed to load job data.</p>;
     }
-    
+
     if (!job) {
         return <p className="text-center mt-10">No data found!</p>
     }
@@ -41,7 +57,7 @@ export default async function Page({ params }: {
                             </CardDescription>
                         </div>
                         <div className="flex items-center gap-2">
-                            <JobApplyButton job={job} />
+                            <ApplyDeleteButton job={job} hasApplied = {userHasApplied}/>
                             <ViewJobApplications job={job} />
                         </div>
                     </div>

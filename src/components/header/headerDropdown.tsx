@@ -10,7 +10,6 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import { User2 } from "lucide-react"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useContext } from "react"
 import { toast } from "sonner"
@@ -41,6 +40,12 @@ export function HeaderDropdown() {
                 {user && <DropdownMenuLabel>{user?.email}</DropdownMenuLabel>}
                 <DropdownMenuSeparator />
                 {
+                    user && 
+                        <DropdownMenuItem onClick={()=>router.push("/profile/"+user.id)}>
+                                Profile
+                        </DropdownMenuItem>
+                }
+                {
                     user && (user?.company ?
                         <DropdownMenuItem onClick={()=>router.push("/add-job")}>
                                 + Add Job
@@ -53,9 +58,14 @@ export function HeaderDropdown() {
                 }
                 {
                     user?.company &&
+                    <>
                     <DropdownMenuItem onClick={() => router.push("/company/" + user.company.id)}>
                         View Company
                     </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => router.push("/applied-jobs")}>
+                        View applied jobs
+                    </DropdownMenuItem>
+                    </>
                 }
                 {
                     !user ?

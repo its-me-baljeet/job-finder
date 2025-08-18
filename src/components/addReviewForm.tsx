@@ -15,7 +15,8 @@ export default function AddReviewForm({ user_id, company_id }:
         const newReview = {
             content: review,
             user_id,
-            company_id
+            company_id,
+            likes: 0
         }
         setLoading(true);
         const res = await fetch(`http://localhost:3000/api/company/review/${company_id}`, {
@@ -33,7 +34,7 @@ export default function AddReviewForm({ user_id, company_id }:
         setLoading(false);
     }
     return (
-        <form onSubmit={handleSubmit} className="w-3xl bg-muted p-5 rounded-md flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="w-full max-w-xl bg-muted p-5 rounded-md flex flex-col gap-5">
             <h2>Give Review</h2>
             <Textarea
                 placeholder="enter company review..."

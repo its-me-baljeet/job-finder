@@ -42,8 +42,8 @@ useEffect(() => {
 
   return (
     <section className="relative w-full">
-      <form className="flex w-full max-w-sm items-center gap-2" action={"/jobs"} method="GET">
-        <Input type="text" value={input} name="q" placeholder="jobs..." onChange={e => setInput(e.target.value)} className="w-xl" autoComplete="off" />
+      <form className="flex w-full max-w-sm items-center gap-2" action={"/search"} method="GET">
+        <Input type="text" value={input} name="q" placeholder="jobs..." onChange={e => setInput(e.target.value)} className="w-full flex shrink" autoComplete="off" />
         <Button type="submit" variant="outline">
           <Search />
         </Button>

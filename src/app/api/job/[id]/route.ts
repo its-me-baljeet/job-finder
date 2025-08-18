@@ -2,36 +2,36 @@ import { getUserFromCookies } from "@/hooks/helper";
 import db from "@/services/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req:NextRequest, {params}:{
-    params:Promise<{
+export async function GET(req: NextRequest, { params }: {
+    params: Promise<{
         id: string;
     }>
-}){
+}) {
     const pr = await params
     const id = pr.id;
 
-    try{
+    try {
         const job = await db.openings.findUnique({
-            where:{
-                id:id
+            where: {
+                id: id
             },
-            include:{
+            include: {
                 company: true,
             }
         }
         )
-        if(job){
+        if (job) {
             return NextResponse.json({
                 success: true,
                 data: job,
             })
-        }else{
+        } else {
             return NextResponse.json({
                 success: false,
                 message: "job not found ;-;"
             })
         }
-    }catch(error){
+    } catch (error) {
         console.error(error);
         return NextResponse.json({
             success: false,
@@ -41,16 +41,16 @@ export async function GET(req:NextRequest, {params}:{
 
 }
 
-export async function DELETE(req: NextRequest, {params}:{
+export async function DELETE(req: NextRequest, { params }: {
     params: Promise<{
         id: string
     }>
-}){
-    try{
+}) {
+    try {
         const pr = await params;
         const jobId = pr.id;
         const res = await db.openings.delete({
-            where:{
+            where: {
                 id: jobId,
             }
         });
@@ -58,7 +58,7 @@ export async function DELETE(req: NextRequest, {params}:{
             success: true,
             message: "Deleted successfully!"
         })
-    }catch(error){
+    } catch (error) {
         console.error(error);
         return NextResponse.json({
             success: false,
@@ -67,17 +67,17 @@ export async function DELETE(req: NextRequest, {params}:{
     }
 }
 
-export async function POST(req: NextRequest, {params}:{
+export async function POST(req: NextRequest, { params }: {
     params: Promise<{
         id: string
     }>
-}){
+}) {
     const pr = await params
     const jobId = pr.id;
     const body = await req.json();
-    try{
+    try {
         const res = await db.openings.update({
-            where:{
+            where: {
                 id: jobId,
             },
             data: {
@@ -88,7 +88,7 @@ export async function POST(req: NextRequest, {params}:{
                 job_type: body.job_type
             }
         })
-    }catch(error){
+    } catch (error) {
         console.error(error);
         return NextResponse.json({
             success: false,

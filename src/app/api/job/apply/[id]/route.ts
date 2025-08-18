@@ -1,4 +1,4 @@
-import { getUserFromCookies } from "@/hooks/helper";
+import { getUserFromCookies, sendCustomResp } from "@/hooks/helper";
 import db from "@/services/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -55,5 +55,29 @@ export async function POST(req: NextRequest) {
             success: false,
             message: "Server error!"
         }, { status: 500 });
+    }
+}
+
+export async function DELETE(req: NextRequest, { params }: {
+    params: Promise<{
+        id: string
+    }>
+}) {
+    const { id } = await params;
+    const user = await getUserFromCookies();
+    try {
+        if (user) {
+            const application = await db.application.deleteMany({
+                where: {
+                    user_id: user.id,
+                    job_id: id
+                },
+            });
+            return sendCustomResp(true, { message: "Application deleted!" });
+        }
+        return sendCustomResp(false, { message: "User not found" });
+    } catch (error) {
+        console.error(error);
+        return sendCustomResp(false, { message: "Server error" });
     }
 }

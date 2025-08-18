@@ -1,3 +1,4 @@
+import { sendCustomResp } from "@/hooks/helper";
 import db from "@/services/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -35,5 +36,24 @@ export async function GET(req: NextRequest, {params}:{
             success: false,
             message: "Server error!",
         })
+    }
+}
+
+export async function DELETE(req: NextRequest, {params}:{
+    params: Promise<{
+        id: string;
+    }>
+}){
+    const {id} = await params;
+    try{
+        const res = await db.application.delete({
+            where: {
+                id
+            }
+        });
+        return sendCustomResp(true, {message: "Deleted Successfully"});
+    }catch(error){
+        console.error(error);
+        return sendCustomResp(false, {message: "Server error!"})
     }
 }

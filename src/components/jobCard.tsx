@@ -11,7 +11,7 @@ import {
     CardTitle
 } from "./ui/card";
 
-export type OpeningWithCompany = Openings & { company: Company };
+export type OpeningWithCompany = Openings & { company?: Company };
 
 export default function JobCard({ job }: { job: OpeningWithCompany }) {
     return (
@@ -37,14 +37,17 @@ export default function JobCard({ job }: { job: OpeningWithCompany }) {
 
             <CardFooter className="mt-auto pt-4">
                 <div className="flex w-full items-center justify-between text-sm font-medium">
+                    {
+                        job?.company &&
+                        <Link
+                            href={`/company/${job.company_id}`}
+                            className="hover:underline text-primary"
+                        >
+                            {job.company.title}
+                        </Link>
+                    }
                     <Link
-                        href={`/company/${job.company_id}`}
-                        className="hover:underline text-primary"
-                    >
-                        {job.company.title}
-                    </Link>
-                    <Link
-                        href={`/jobs/${job.id}`}
+                        href={`/job/${job.id}`}
                         className="text-sm text-muted-foreground hover:underline ml-auto"
                     >
                         View

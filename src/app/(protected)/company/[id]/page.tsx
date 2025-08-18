@@ -14,6 +14,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     }
 
     const company = data.data;
+    console.log(company)
     const owner = company.owner;
 
     return (

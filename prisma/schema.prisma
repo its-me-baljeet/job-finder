@@ -25,24 +25,25 @@ model Job {
 }
 
 model Openings {
-  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
   title           String
   description     String
   location        String
   salary          Int
-  employment_type String  @default("fulltime")
-  job_type        String  @default("on-site")
-  company_id      String  @db.ObjectId
-  company         Company @relation(fields: [company_id], references: [id])
+  employment_type String        @default("fulltime")
+  job_type        String        @default("on-site")
+  company_id      String        @db.ObjectId
+  company         Company       @relation(fields: [company_id], references: [id])
+  application     Application[]
 }
 
 model User {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  email    String   @unique
-  password String
-  role     String
-  company  Company?
-  review   Review[]
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  email       String        @unique
+  password    String
+  role        String
+  company     Company?
+  review      Review[]
   application Application[]
 }
 
@@ -60,12 +61,14 @@ model Review {
   content    String
   user_id    String @db.ObjectId
   user       User   @relation(fields: [user_id], references: [id])
+  likes      Int
   company_id String
 }
 
-model Application{
-  id         String @id @default(auto()) @map("_id") @db.ObjectId
-  user_id String @db.ObjectId
-  user       User   @relation(fields: [user_id], references: [id])
-  job_id   String
+model Application {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id String   @db.ObjectId
+  user    User     @relation(fields: [user_id], references: [id])
+  job_id  String   @db.ObjectId
+  job     Openings @relation(fields: [job_id], references: [id])
 }

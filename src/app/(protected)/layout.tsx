@@ -1,5 +1,5 @@
 'use client'
-import Header from "@/components/header";
+import Header from "@/components/header/header";
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { Toaster } from "sonner";
 import { Company, User } from "../../../generated/prisma";
@@ -29,7 +29,6 @@ export default function Layout({ children }: {
             <UserContext.Provider value={{ user, setUser }}>
                 <Header />
                 {children}
-                <Toaster position="top-center" />
             </UserContext.Provider>
         </div>
     )

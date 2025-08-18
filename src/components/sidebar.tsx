@@ -59,7 +59,7 @@ export function AppSidebar() {
     const [minSalary, setMinSalary] = useState(Number(ms) || 100000);
 
     function handleSubmit() {
-        const url = `/jobs?q=${q}&jt=${jobType}&et=${employmentType}&ms=${minSalary}`;
+        const url = `/search?q=${q}&jt=${jobType}&et=${employmentType}&ms=${minSalary}`;
         router.push(url);
     }
 
