@@ -20,7 +20,11 @@ export async function POST(req: NextRequest) {
         }
 
         const token = createToken(userTokenData);
-        const res = NextResponse.redirect(`${process.env.NEXT_PUBLIC_HOST_NAME}`)
+        const res = NextResponse.json({
+            success: true,
+            message: "Registration successful!",
+        });
+
         res.cookies.set('token', token);
         return res;
     } catch (error) {

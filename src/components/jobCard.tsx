@@ -19,9 +19,14 @@ export default function JobCard({ job }: { job: OpeningWithCompany }) {
             <CardHeader className="space-y-2">
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                     <CardTitle className="text-lg">{job.title}</CardTitle>
+                    <div className="flex gap-3">
+                    <Badge variant="secondary" className="w-fit h-fit">
+                        {job.job_type}
+                    </Badge>
                     <Badge variant="default" className="w-fit h-fit">
                         {job.employment_type}
                     </Badge>
+                    </div>
                 </div>
 
                 <p className="flex items-center gap-1 text-sm text-muted-foreground">

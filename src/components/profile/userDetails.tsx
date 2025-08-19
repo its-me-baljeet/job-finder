@@ -14,7 +14,7 @@ export default function UserDetials(){
                 <CardContent>
                     <h2 className="text-2xl font-medium">{user?.email}</h2>
                     <p className="text-muted-foreground text-sm font-medium">{user?.role}</p>
-                    <h4 className="text-lg">{user?.company.title}</h4>
+                    <h4 className="text-lg">{user?.company?.title}</h4>
                 </CardContent>
             </Card>
     )

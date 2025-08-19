@@ -16,7 +16,6 @@ export default function AddReviewForm({ user_id, company_id }:
             content: review,
             user_id,
             company_id,
-            likes: 0
         }
         setLoading(true);
         const res = await fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/company/review/${company_id}`, {

@@ -49,6 +49,11 @@ export async function DELETE(req: NextRequest, { params }: {
     try {
         const pr = await params;
         const jobId = pr.id;
+
+        await db.application.deleteMany({
+            where: { job_id: jobId },
+        });
+
         const res = await db.openings.delete({
             where: {
                 id: jobId,

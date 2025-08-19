@@ -1,9 +1,6 @@
 import JobCard from "@/components/jobCard";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { getUserFromCookies } from "@/hooks/helper";
-import db from "@/services/prisma"
+import db from "@/services/prisma";
 
 export default async function AppliedJobsPage(){
     const currUser = await getUserFromCookies();

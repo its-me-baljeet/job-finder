@@ -48,7 +48,7 @@ export default function ViewJobApplications({ job }: {
         }
     }
 
-    if (user?.company.id != job.company_id) return null;
+    if (user?.company?.id != job.company_id) return null;
     return (
         <Dialog>
             <DialogTrigger>view job applicants</DialogTrigger>
@@ -56,20 +56,34 @@ export default function ViewJobApplications({ job }: {
                 <DialogHeader>
                     <DialogTitle>Job Applicants</DialogTitle>
                     <DialogDescription>
-                        {
-                            loading && <LoaderPinwheelIcon className="animate-spin" />
-                        }
-                        {
-                            applicants.map(application => {
-                                return <Card key={application.id}>
-                                    <Badge className="ml-3">{application.user.email}</Badge>
-                                    <Button variant="destructive" onClick={() => handleDelete(application.id)}><Trash2 /></Button>
-                                </Card>
-                            })
-                        }``
+                        Below are the applicants for this job:
                     </DialogDescription>
                 </DialogHeader>
+
+                {
+                    loading && <LoaderPinwheelIcon className="animate-spin" />
+                }
+
+                {
+                    applicants.length > 0 ? (
+                        applicants.map(application => (
+                            <Card key={application.id} className="w-full flex justify-between items-center p-3">
+                                <p className="ml-3">{application.user.email}</p>
+                                <Button
+                                    variant="destructive"
+                                    className="w-fit"
+                                    onClick={() => handleDelete(application.id)}
+                                >
+                                    <Trash2 />
+                                </Button>
+                            </Card>
+                        ))
+                    ) : (
+                        <span>No applicants</span>
+                    )
+                }
             </DialogContent>
+
         </Dialog>
     )
 }

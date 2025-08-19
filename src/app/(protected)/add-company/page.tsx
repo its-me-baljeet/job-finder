@@ -27,7 +27,7 @@ export default function Page() {
         const data = await res.json();
         if (data.success) {
             toast.success("Company added!");
-            router.push("/");
+            window.location.href = "/";
         } else {
             toast.error(data.message);
             return;

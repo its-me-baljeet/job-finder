@@ -61,7 +61,6 @@ model Review {
   content    String
   user_id    String @db.ObjectId
   user       User   @relation(fields: [user_id], references: [id])
-  likes      Int
   company_id String
 }
 

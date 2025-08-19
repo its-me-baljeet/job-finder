@@ -19,6 +19,7 @@ export default function EditDelete({ job }:{
             const data = await res.json();
             if (data.success) {
                 toast.success(data.message);
+                window.location.href= "/";
             } else {
                 toast.error(data.message);
             }

@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import ViewJobApplications from "@/components/viewJobApplications";
 import { getUserFromCookies } from "@/hooks/helper";
 import db from "@/services/prisma";
-import { Briefcase, Clock, MapPin } from "lucide-react";
+import { Briefcase, Clock, LucideBookmark, MapPin } from "lucide-react";
 import Link from "next/link";
 
 export default async function Page({ params }: {
@@ -57,6 +57,7 @@ export default async function Page({ params }: {
                             </CardDescription>
                         </div>
                         <div className="flex items-center gap-2">
+                            {/* <LucideBookmark /> */}
                             <ApplyDeleteButton job={job} hasApplied={userHasApplied} />
                             <ViewJobApplications job={job} />
                         </div>

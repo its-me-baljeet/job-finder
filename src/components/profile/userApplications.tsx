@@ -12,15 +12,17 @@ export default function UserApplications({ user_id }: {
     async function getUserApplications() {
         const resp = await fetch("/api/applications/" + user_id);
         const data = await resp.json();
-        // console.log(data)
-        setApplications(data.data);
+        if(data.success){
+            setApplications(data.data.applications);
+        }
     }
     useEffect(() => {
         getUserApplications();
     }, []);
-    console.log("application state", applications)
     if (!applications.length) {
-        return <p>No applications</p>
+        return <section className="h-full md:w-3/5 p-5">
+            <p>No applications</p>
+        </section>
     }
     return (
         <section className="h-full md:w-3/5">
@@ -28,11 +30,11 @@ export default function UserApplications({ user_id }: {
                 <CardHeader>
                     Your Applications
                 </CardHeader>
-                <CardContent>
+                <CardContent className="grid md:grid-cols-3 gap-5">
                     {
                         applications.map(appl => {
                             return (
-                                <JobCard job={appl.job} />
+                                <JobCard key={appl.id} job={appl.job} />
                             )
                         })
                     }

@@ -1,17 +1,17 @@
 'use client'
-import { Heart, LucideLoaderPinwheel, MessageCircle, Trash2 } from "lucide-react";
+import { UserContext } from "@/app/(protected)/layout";
+import { Heart, LucideLoaderPinwheel, Trash2 } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
+import { Review, User } from "../../generated/prisma";
 import AddReviewForm from "./addReviewForm";
 import JobCard, { OpeningWithCompany } from "./jobCard";
+import { Badge } from "./ui/badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { Badge } from "./ui/badge";
-import { Company, Job, Review, User } from "../../generated/prisma";
-import { toast } from "sonner";
-import { UserContext } from "@/app/(protected)/layout";
 
-export default function CompanyReviewsAndJobContainer({ user_id, company_id }:
-    { user_id: string, company_id: string }
+export default function CompanyReviewsAndJobContainer({ owner_id, company_id }:
+    { owner_id: string, company_id: string }
 ) {
     const [listedJobs, setListedJobs] = useState<OpeningWithCompany[]>([]);
     const [reviews, setReviews] = useState<(Review & { user: User })[]>([]);
@@ -79,7 +79,10 @@ export default function CompanyReviewsAndJobContainer({ user_id, company_id }:
             </TabsContent>
             {loading && <p className="h-full w-full flex justify-center items-center"><LucideLoaderPinwheel className="animate-spin mt-10" /></p>}
             <TabsContent value="password" className="w-full flex flex-col gap-5">
-                <AddReviewForm user_id={user_id} company_id={company_id} />
+                {
+                    user && user.company?.id!=company_id &&
+                    <AddReviewForm user_id={user.id} company_id={company_id} />
+                }
                 {reviews.length > 0 ? <h2>All Reviews</h2> : <h2>No reviews available!</h2>}
                 <section className="flex flex-col gap-3">
                     {
@@ -95,12 +98,6 @@ export default function CompanyReviewsAndJobContainer({ user_id, company_id }:
                                         {rev.content}
                                     </CardContent>
                                     <CardFooter className="flex gap-2">
-                                        {
-                                            <div className="flex gap-1">
-                                                <Heart />
-                                                <p>{rev.likes}</p>
-                                            </div>
-                                        }
                                         {
                                             rev.user_id === user?.id &&
                                             <Trash2 onClick={() => handleDeleteReview(rev.id)} />

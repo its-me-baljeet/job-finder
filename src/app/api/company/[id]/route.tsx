@@ -2,13 +2,13 @@ import { getUserFromCookies } from "@/hooks/helper";
 import db from "@/services/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req:NextRequest,{params}:{
+export async function GET(req: NextRequest, { params }: {
     params: Promise<{
         id: string;
     }>
-}){
+}) {
     const pr = await params;
-    const id= pr.id;
+    const id = pr.id;
     const company = await db.company.findUnique({
         where: {
             id: id,
@@ -17,7 +17,7 @@ export async function GET(req:NextRequest,{params}:{
             owner: true,
         }
     });
-    
+
     if (!company) {
         return NextResponse.json({
             success: false,
@@ -31,35 +31,43 @@ export async function GET(req:NextRequest,{params}:{
     })
 }
 
-export async function DELETE(req:NextRequest,{params}:{
-    params:Promise<{id:string}>
-}){
-    try{
+export async function DELETE(req: NextRequest, { params }: {
+    params: Promise<{ id: string }>
+}) {
+    try {
         const pr = await params;
         const id = pr.id;
         const user = await getUserFromCookies();
-        console.log(user?.company)
-        const company = await db.company.findUnique({
-            where:{
-                id: id
-            }
-        })
-        if(company?.ownerId == user?.id){
+        if (id == user?.company?.id) {
+            const openings = await db.openings.findMany({
+                where: { company_id: id },
+                select: { id: true },
+            });
+
+            const openingIds = openings.map(o => o.id);
+
+            await db.application.deleteMany({
+                where: { job_id: { in: openingIds } },
+            });
+
+            await db.openings.deleteMany({
+                where: { company_id: id },
+            });
+
             const res = await db.company.delete({
-                where:{
-                    id: id
-                }
-            })
+                where: { id },
+            });
+
             return NextResponse.json({
-                success:true,
-                message:`company: ${res?.title} deleted!`
+                success: true,
+                message: `company: ${res?.title} deleted!`
             })
         }
         return NextResponse.json({
-            success:false,
-            message:`unable to delete company: ${company?.title}`
+            success: false,
+            message: `unable to delete company`
         })
-    }catch(error){
+    } catch (error) {
         console.error("something went wrong:", error);
         return NextResponse.json({
             success: false,

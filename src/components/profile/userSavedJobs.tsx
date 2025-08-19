@@ -6,6 +6,7 @@ export default function UserSavedJobs() {
             <Card>
                 <CardHeader>
                     Saved Jobs
+                    <p>Feature coming soon...</p>
                 </CardHeader>
             </Card>
         </section>
